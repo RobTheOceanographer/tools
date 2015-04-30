@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+"""
+######################################################################
+## AUSTRALIAN BUREAU OF METEOROLOGY
+## BUREAU NATIONAL OPERATIONS CENTRE
+## SECTION: OCEANOGRAPHIC SYSTEMS DEVELOPMENT SECTION 
+##
+## DATE:         May 2015
+## AUTHOR:       Robert Johnson rjohnson@bom.gov.au
+## VERSION:      0.1.0
+## LANGUAGE:     python
+##
+## DEPENDENCIES: datetime, sys
+##
+## USAGE:	get_mondays_date [next; last]
+##
+##			NOTE: this script is used from the shell and so to capture the output
+##			something like this is handy:
+##			mondaysDate=$(./get_mondays_date next)
+##
+## PURPOSE:     This is a little command line tool that will find out
+##		todays date and  will return either last mondays date
+##		or next mondays date depending on which option you use.
+##		Format is returned as YYYYMMDD.
+##
+######################################################################
+"""
+__author__ = 'rjohnson'
+import datetime
+import sys
+
+# local time?
+#today = datetime.date.today()
+#nextMonday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
+#lastMonday = today - datetime.timedelta(days=today.weekday())
+
+# UTC Time
+todayUTC = datetime.datetime.utcnow()
+todayDateUTC = todayUTC.date()
+#nextMonday = todayUTC + datetime.timedelta(days=-todayUTC.weekday(), weeks=1)
+nextMondayDateUTC=todayDateUTC + datetime.timedelta(days=-todayDateUTC.weekday(), weeks=1)
+#lastMonday = todayUTC - datetime.timedelta(days=todayUTC.weekday())
+lastMondayDateUTC = todayDateUTC - datetime.timedelta(days=todayDateUTC.weekday())
+
+if len(sys.argv) < 2:
+    print "FAILED: please provide either 'next' or 'last' as a cmd line input."
+    exit(1)
+elif len(sys.argv) > 2:
+    print "FAILED: please provide either 'next' or 'last' as a cmd line input."
+    exit(1)
+elif sys.argv[1] in ['last', 'Last']:
+    print lastMondayDateUTC.strftime('%Y%m%d')
+elif sys.argv[1] in ["next","Next"]:
+    print nextMondayDateUTC.strftime('%Y%m%d')
+else:
+    print "FAILED: please provide either 'next' or 'last' as a cmd line input."
+    exit(1)
+
+
